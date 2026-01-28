@@ -1,0 +1,47 @@
+{
+  "name": "@onegenui/viz",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "Advanced data visualization components for OneGenUI.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@onegenui/core": "workspace:*",
+    "@onegenui/react": "workspace:*",
+    "@onegenui/schemas": "workspace:^",
+    "@onegenui/utils": "workspace:^",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/react": "19.2.3",
+    "@types/react-dom": "19.1.6",
+    "lightweight-charts": "^5.1.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "lightweight-charts": "^5.0.0",
+    "lucide-react": "^0.400.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
