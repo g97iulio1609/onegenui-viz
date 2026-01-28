@@ -255,13 +255,11 @@ export const Graph = memo(function Graph({
   return (
     <div
       ref={containerRef}
-      style={
-        {
-          "--graph-height": `${Math.max(240, height ?? DEFAULT_H)}px`,
-        } as React.CSSProperties
-      }
+      style={{
+        height: `${Math.max(200, (height ?? DEFAULT_H) * 0.8)}px`,
+      }}
       className={cn(
-        "relative w-full overflow-hidden rounded-xl border border-border/50 glass-panel bg-card/80 backdrop-blur-md touch-none select-none h-[var(--graph-height)] shadow-lg",
+        "relative w-full overflow-hidden rounded-lg sm:rounded-xl border border-border/50 glass-panel bg-card/80 backdrop-blur-md touch-none select-none shadow-lg",
       )}
       onWheel={handleWheel}
       onPointerDown={handlePointerDown}
@@ -270,12 +268,12 @@ export const Graph = memo(function Graph({
       onPointerLeave={handlePointerUp}
     >
       {title && (
-        <div className="absolute top-4 left-4 z-10 bg-background px-2 py-1 rounded border border-border font-semibold text-sm shadow-sm">
+        <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-10 bg-background px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-border font-semibold text-xs sm:text-sm shadow-sm">
           {title}
         </div>
       )}
 
-      <div className="absolute bottom-2.5 right-2.5 text-[10px] text-muted-foreground z-10">
+      <div className="absolute bottom-1.5 sm:bottom-2.5 right-1.5 sm:right-2.5 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground z-10">
         Zoom: {Math.round(zoom * 100)}%
       </div>
 

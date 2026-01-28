@@ -63,8 +63,8 @@ var import_utils2 = require("@onegenui/utils");
 var import_jsx_runtime = require("react/jsx-runtime");
 var DEFAULT_HEIGHT = 200;
 var MIN_HEIGHT = 120;
-var Y_AXIS_WIDTH = 48;
-var BAR_GAP = 8;
+var Y_AXIS_WIDTH = 40;
+var BAR_GAP = 6;
 var DEFAULT_COLORS = [
   "#3b82f6",
   // blue
@@ -170,34 +170,36 @@ var Chart = (0, import_react.memo)(function Chart2({
     };
   }, [chartData]);
   if (!chartData || chartData.length === 0) {
-    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex items-center justify-center p-8 bg-card border border-border rounded-lg text-muted-foreground", children: "No data available" });
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "flex items-center justify-center p-4 sm:p-8 bg-card border border-border rounded-lg sm:rounded-xl text-muted-foreground text-sm", children: "No data available" });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex flex-col w-full h-full glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-lg", children: [
-    title && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { className: "text-sm font-semibold mb-4 text-foreground", children: title }),
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex flex-col w-full h-full glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg", children: [
+    title && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", { className: "text-xs sm:text-sm font-semibold mb-3 sm:mb-4 text-foreground", children: title }),
     /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
       "div",
       {
-        className: "relative w-full h-[var(--chart-height)]",
-        style: { "--chart-height": `${chartHeight}px` },
+        className: "relative w-full",
+        style: { height: `${chartHeight}px` },
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 flex flex-col justify-between pointer-events-none", children: ticks.slice().reverse().map((tick) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: "flex items-center w-full h-0 relative", children: [
             /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
               "div",
               {
-                className: "w-full border-t border-border border-dashed ml-[var(--grid-offset)] w-[calc(100%-var(--grid-offset))]",
+                className: "border-t border-border border-dashed",
                 style: {
-                  "--grid-offset": `${Y_AXIS_WIDTH + 8}px`
+                  marginLeft: `${Y_AXIS_WIDTH + 4}px`,
+                  width: `calc(100% - ${Y_AXIS_WIDTH + 4}px)`
                 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute left-0 text-[10px] text-muted-foreground w-[48px] text-right -translate-y-1/2 pr-2", children: formatValue(tick) })
+            /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute left-0 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground text-right -translate-y-1/2 pr-1", style: { width: `${Y_AXIS_WIDTH}px` }, children: formatValue(tick) })
           ] }, tick)) }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
             "div",
             {
-              className: "absolute inset-0 flex items-end justify-between pt-3 pb-6 left-[var(--left-offset)] right-0",
+              className: "absolute inset-0 flex items-end justify-between pt-2 sm:pt-3 pb-5 sm:pb-6",
               style: {
-                "--left-offset": `${Y_AXIS_WIDTH + 8}px`
+                left: `${Y_AXIS_WIDTH + 4}px`,
+                right: 0
               },
               children: normalizedData.map((d, i) => {
                 const itemId = i.toString();
@@ -210,21 +212,23 @@ var Chart = (0, import_react.memo)(function Chart2({
                     "data-selectable-item": true,
                     "data-element-key": element.key,
                     "data-item-id": itemId,
-                    className: "relative flex-1 h-full flex flex-col justify-end items-center group/bar cursor-pointer px-[var(--bar-padding)]",
-                    style: { "--bar-padding": `${BAR_GAP / 2}px` },
+                    className: "relative flex-1 h-full flex flex-col justify-end items-center group/bar cursor-pointer touch-manipulation",
+                    style: { padding: `0 ${BAR_GAP / 2}px` },
                     onMouseEnter: () => setHoveredIndex(i),
                     onMouseLeave: () => setHoveredIndex(null),
+                    onTouchStart: () => setHoveredIndex(i),
+                    onTouchEnd: () => setHoveredIndex(null),
                     children: [
                       (isHovered || isSelected) && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
                         "div",
                         {
                           className: (0, import_utils2.cn)(
-                            "absolute bottom-full mb-1 z-20 px-2 py-1",
-                            "bg-popover text-popover-foreground text-xs font-medium rounded shadow-md pointer-events-none whitespace-nowrap",
+                            "absolute bottom-full mb-1 z-20 px-1.5 sm:px-2 py-0.5 sm:py-1",
+                            "bg-popover text-popover-foreground text-[0.625rem] sm:text-xs font-medium rounded shadow-md pointer-events-none whitespace-nowrap",
                             "animate-in fade-in zoom-in-95 duration-200"
                           ),
                           children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "opacity-70 mr-1", children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { className: "opacity-70 mr-0.5 sm:mr-1", children: [
                               d.label,
                               ":"
                             ] }),
@@ -236,17 +240,17 @@ var Chart = (0, import_react.memo)(function Chart2({
                         "div",
                         {
                           className: (0, import_utils2.cn)(
-                            "w-full rounded-t transition-all duration-200 relative h-[var(--bar-height)] bg-[var(--bar-color)] shadow-[var(--bar-shadow)]",
+                            "w-full rounded-t transition-all duration-200 relative",
                             isSelected ? "opacity-100 ring-2 ring-primary ring-offset-1" : "opacity-85 hover:opacity-100"
                           ),
                           style: {
-                            "--bar-height": barHeight,
-                            "--bar-color": d.color,
-                            "--bar-shadow": isHovered ? `0 0 10px ${hexToRgba(d.color || "#000", 0.4)}` : "none"
+                            height: barHeight,
+                            backgroundColor: d.color,
+                            boxShadow: isHovered ? `0 0 10px ${hexToRgba(d.color || "#000", 0.4)}` : "none"
                           }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-full mt-2 text-[10px] text-muted-foreground truncate w-full text-center max-w-full", children: d.label })
+                      /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-full mt-1 sm:mt-2 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground truncate w-full text-center max-w-full", children: d.label })
                     ]
                   },
                   i
@@ -426,18 +430,18 @@ var StockChart = (0, import_react3.memo)(function StockChart2({
     seriesRef.current = series;
   };
   const timeframes = ["1D", "1W", "1M", "3M", "1Y", "5Y", "ALL"];
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-3 p-4 glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl shadow-lg", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex justify-between items-center flex-wrap gap-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("h3", { className: "m-0 text-sm font-semibold text-foreground", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col gap-2 sm:gap-3 p-3 sm:p-4 glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl shadow-lg", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("h3", { className: "m-0 text-xs sm:text-sm font-semibold text-foreground", children: [
         symbol,
         " Stock Price"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex gap-1 bg-muted/20 p-1 rounded-md", children: timeframes.map((tf) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "flex gap-0.5 sm:gap-1 bg-muted/20 p-0.5 sm:p-1 rounded-md overflow-x-auto touch-pan-x w-full sm:w-auto", children: timeframes.map((tf) => /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
         "button",
         {
           onClick: () => setTimeframe(tf),
           className: (0, import_utils2.cn)(
-            "px-2 py-1 text-xs font-medium rounded transition-all",
+            "px-2 sm:px-2.5 py-1 sm:py-1.5 text-[0.625rem] sm:text-xs font-medium rounded transition-all touch-manipulation min-h-[1.75rem] sm:min-h-0 flex-shrink-0",
             timeframe === tf ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
           ),
           children: tf
@@ -448,11 +452,11 @@ var StockChart = (0, import_react3.memo)(function StockChart2({
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
       "div",
       {
-        className: "relative w-full overflow-hidden rounded bg-black/5 h-[var(--chart-height)]",
-        style: { "--chart-height": `${height}px` },
+        className: "relative w-full overflow-hidden rounded bg-black/5",
+        style: { height: `${Math.max(height * 0.7, 200)}px` },
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { ref: containerRef, className: "w-full h-full" }),
-          !filteredData.length && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute inset-0 flex items-center justify-center text-muted-foreground text-sm", children: "No data available for this timeframe" })
+          !filteredData.length && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "absolute inset-0 flex items-center justify-center text-muted-foreground text-xs sm:text-sm", children: "No data available for this timeframe" })
         ]
       }
     )
@@ -707,15 +711,15 @@ var MindMap = (0, import_react5.memo)(function MindMap2({
     return buildTreeFromFlat(nodes);
   }, [nodes]);
   if (!rootNodes.length) {
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "p-8 text-center text-muted-foreground bg-muted/20 rounded-xl border border-dashed border-border", children: "No mind map data" });
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "p-4 sm:p-8 text-center text-muted-foreground bg-muted/20 rounded-lg sm:rounded-xl border border-dashed border-border text-sm", children: "No mind map data" });
   }
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "w-full overflow-hidden", children: [
-    title && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { className: "mb-4 text-lg font-semibold text-foreground flex items-center gap-2", children: title }),
+    title && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("h3", { className: "mb-2 sm:mb-4 text-base sm:text-lg font-semibold text-foreground flex items-center gap-2", children: title }),
     /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
       "div",
       {
         className: (0, import_utils2.cn)(
-          "flex p-8 gap-12 overflow-auto glass-subtle rounded-2xl min-h-[400px]",
+          "flex p-4 sm:p-6 lg:p-8 gap-6 sm:gap-8 lg:gap-12 overflow-auto glass-subtle rounded-lg sm:rounded-2xl min-h-[250px] sm:min-h-[350px] lg:min-h-[400px] touch-pan-x touch-pan-y",
           isHorizontal ? "flex-col" : "flex-row"
         ),
         children: rootNodes.map((node) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
@@ -1093,10 +1097,10 @@ var Graph = (0, import_react8.memo)(function Graph2({
     {
       ref: containerRef,
       style: {
-        "--graph-height": `${Math.max(240, height ?? DEFAULT_H)}px`
+        height: `${Math.max(200, (height ?? DEFAULT_H) * 0.8)}px`
       },
       className: (0, import_utils2.cn)(
-        "relative w-full overflow-hidden rounded-xl border border-border/50 glass-panel bg-card/80 backdrop-blur-md touch-none select-none h-[var(--graph-height)] shadow-lg"
+        "relative w-full overflow-hidden rounded-lg sm:rounded-xl border border-border/50 glass-panel bg-card/80 backdrop-blur-md touch-none select-none shadow-lg"
       ),
       onWheel: handleWheel,
       onPointerDown: handlePointerDown,
@@ -1104,8 +1108,8 @@ var Graph = (0, import_react8.memo)(function Graph2({
       onPointerUp: handlePointerUp,
       onPointerLeave: handlePointerUp,
       children: [
-        title && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "absolute top-4 left-4 z-10 bg-background px-2 py-1 rounded border border-border font-semibold text-sm shadow-sm", children: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "absolute bottom-2.5 right-2.5 text-[10px] text-muted-foreground z-10", children: [
+        title && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "absolute top-2 sm:top-4 left-2 sm:left-4 z-10 bg-background px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-border font-semibold text-xs sm:text-sm shadow-sm", children: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "absolute bottom-1.5 sm:bottom-2.5 right-1.5 sm:right-2.5 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground z-10", children: [
           "Zoom: ",
           Math.round(zoom * 100),
           "%"
@@ -1194,24 +1198,24 @@ var Gantt = (0, import_react10.memo)(function Gantt2({
     month: "short",
     day: "numeric"
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-4 overflow-hidden shadow-lg", children: [
-    title && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { className: "mb-5 text-lg font-bold text-foreground", children: title }),
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl p-3 sm:p-4 overflow-hidden shadow-lg", children: [
+    title && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { className: "mb-3 sm:mb-5 text-base sm:text-lg font-bold text-foreground", children: title }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       "div",
       {
-        className: "relative min-h-[var(--gantt-height)]",
+        className: "relative",
         style: {
-          "--gantt-height": `${tasks.length * 40 + 40}px`
+          minHeight: `${tasks.length * 36 + 40}px`
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "overflow-x-auto pb-3", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "min-w-[600px]", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "flex justify-between mb-3 border-b border-border pb-2 text-xs text-muted-foreground", children: [
+        children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "overflow-x-auto pb-2 sm:pb-3 touch-pan-x", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "min-w-[400px] sm:min-w-[600px]", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "flex justify-between mb-2 sm:mb-3 border-b border-border pb-1.5 sm:pb-2 text-[0.625rem] sm:text-xs text-muted-foreground", children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: tasks[0] ? formatDate(tasks[0].start) : "" }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: (() => {
               const lastTask = tasks[tasks.length - 1];
               return lastTask ? formatDate(lastTask.end) : "";
             })() })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "flex flex-col gap-3", children: tasks.map((task, index) => {
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "flex flex-col gap-2 sm:gap-3", children: tasks.map((task, index) => {
             const paddingLeft = getLeft(task.start);
             const width = getWidth(task.start, task.end);
             const isMilestone = task.type === "milestone" || width === 0;
@@ -1222,9 +1226,9 @@ var Gantt = (0, import_react10.memo)(function Gantt2({
                 "data-selectable-item": true,
                 "data-element-key": element.key,
                 "data-item-id": itemId,
-                className: "flex items-center h-7 rounded px-1 cursor-pointer hover:bg-muted/50 transition-colors",
+                className: "flex items-center h-6 sm:h-7 rounded px-0.5 sm:px-1 cursor-pointer hover:bg-muted/50 transition-colors touch-manipulation",
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "w-1/5 pr-3 text-[13px] font-medium overflow-hidden text-ellipsis whitespace-nowrap text-foreground", children: task.name }),
+                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "w-1/4 sm:w-1/5 pr-1.5 sm:pr-3 text-[0.625rem] sm:text-[0.8125rem] font-medium overflow-hidden text-ellipsis whitespace-nowrap text-foreground", children: task.name }),
                   /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                     "div",
                     {
@@ -1235,21 +1239,21 @@ var Gantt = (0, import_react10.memo)(function Gantt2({
                       children: isMilestone ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                         "div",
                         {
-                          className: "absolute w-4 h-4 z-10 border-2 border-white shadow-sm left-[var(--milestone-left)] bg-[var(--milestone-color)] rotate-45 -translate-x-1/2 origin-left",
+                          className: "absolute w-3 h-3 sm:w-4 sm:h-4 z-10 border-2 border-white shadow-sm rotate-45 -translate-x-1/2 origin-left",
                           style: {
-                            "--milestone-left": `${paddingLeft}%`,
-                            "--milestone-color": task.color || "#eab308"
+                            left: `${paddingLeft}%`,
+                            backgroundColor: task.color || "#eab308"
                           },
                           title: `Milestone: ${task.name}`
                         }
                       ) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
                         "div",
                         {
-                          className: "absolute h-full rounded opacity-90 flex items-center pl-2 text-white text-[10px] overflow-hidden left-[var(--task-left)] w-[var(--task-width)] bg-[var(--task-color)]",
+                          className: "absolute h-full rounded opacity-90 flex items-center pl-1.5 sm:pl-2 text-white text-[0.5rem] sm:text-[0.625rem] overflow-hidden",
                           style: {
-                            "--task-left": `${paddingLeft}%`,
-                            "--task-width": `${width}%`,
-                            "--task-color": task.color || "var(--primary)"
+                            left: `${paddingLeft}%`,
+                            width: `${width}%`,
+                            backgroundColor: task.color || "var(--primary)"
                           },
                           title: `${task.name}: ${task.progress}%`,
                           children: [
@@ -1260,9 +1264,9 @@ var Gantt = (0, import_react10.memo)(function Gantt2({
                             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                               "div",
                               {
-                                className: "absolute left-0 top-0 bottom-0 bg-white opacity-20 w-[var(--task-progress)]",
+                                className: "absolute left-0 top-0 bottom-0 bg-white opacity-20",
                                 style: {
-                                  "--task-progress": `${task.progress}%`
+                                  width: `${task.progress}%`
                                 }
                               }
                             )
@@ -1279,7 +1283,7 @@ var Gantt = (0, import_react10.memo)(function Gantt2({
         ] }) })
       }
     ),
-    children && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "mt-6 space-y-4", children })
+    children && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "mt-4 sm:mt-6 space-y-3 sm:space-y-4", children })
   ] });
 });
 

@@ -27,8 +27,8 @@ type ChartDatum = {
 
 const DEFAULT_HEIGHT = 200;
 const MIN_HEIGHT = 120;
-const Y_AXIS_WIDTH = 48;
-const BAR_GAP = 8;
+const Y_AXIS_WIDTH = 40;
+const BAR_GAP = 6;
 const DEFAULT_COLORS = [
   "#3b82f6", // blue
   "#22c55e", // green
@@ -172,23 +172,23 @@ export const Chart = memo(function Chart({
 
   if (!chartData || chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center p-8 bg-card border border-border rounded-lg text-muted-foreground">
+      <div className="flex items-center justify-center p-4 sm:p-8 bg-card border border-border rounded-lg sm:rounded-xl text-muted-foreground text-sm">
         No data available
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col w-full h-full glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-4 shadow-lg">
+    <div className="flex flex-col w-full h-full glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg">
       {/* Title */}
       {title && (
-        <h3 className="text-sm font-semibold mb-4 text-foreground">{title}</h3>
+        <h3 className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4 text-foreground">{title}</h3>
       )}
 
       {/* Chart Area */}
       <div
-        className="relative w-full h-[var(--chart-height)]"
-        style={{ "--chart-height": `${chartHeight}px` } as React.CSSProperties}
+        className="relative w-full"
+        style={{ height: `${chartHeight}px` }}
       >
         {/* Y-Axis Grid Lines & Labels */}
         <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
@@ -198,14 +198,13 @@ export const Chart = memo(function Chart({
             .map((tick) => (
               <div key={tick} className="flex items-center w-full h-0 relative">
                 <div
-                  className="w-full border-t border-border border-dashed ml-[var(--grid-offset)] w-[calc(100%-var(--grid-offset))]"
-                  style={
-                    {
-                      "--grid-offset": `${Y_AXIS_WIDTH + 8}px`,
-                    } as React.CSSProperties
-                  }
+                  className="border-t border-border border-dashed"
+                  style={{
+                    marginLeft: `${Y_AXIS_WIDTH + 4}px`,
+                    width: `calc(100% - ${Y_AXIS_WIDTH + 4}px)`,
+                  }}
                 />
-                <span className="absolute left-0 text-[10px] text-muted-foreground w-[48px] text-right -translate-y-1/2 pr-2">
+                <span className="absolute left-0 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground text-right -translate-y-1/2 pr-1" style={{ width: `${Y_AXIS_WIDTH}px` }}>
                   {formatValue(tick)}
                 </span>
               </div>
@@ -214,12 +213,11 @@ export const Chart = memo(function Chart({
 
         {/* Bars Container */}
         <div
-          className="absolute inset-0 flex items-end justify-between pt-3 pb-6 left-[var(--left-offset)] right-0"
-          style={
-            {
-              "--left-offset": `${Y_AXIS_WIDTH + 8}px`,
-            } as React.CSSProperties
-          }
+          className="absolute inset-0 flex items-end justify-between pt-2 sm:pt-3 pb-5 sm:pb-6"
+          style={{
+            left: `${Y_AXIS_WIDTH + 4}px`,
+            right: 0,
+          }}
         >
           {normalizedData.map((d, i) => {
             const itemId = i.toString();
@@ -233,23 +231,23 @@ export const Chart = memo(function Chart({
                 data-selectable-item
                 data-element-key={element.key}
                 data-item-id={itemId}
-                className="relative flex-1 h-full flex flex-col justify-end items-center group/bar cursor-pointer px-[var(--bar-padding)]"
-                style={
-                  { "--bar-padding": `${BAR_GAP / 2}px` } as React.CSSProperties
-                }
+                className="relative flex-1 h-full flex flex-col justify-end items-center group/bar cursor-pointer touch-manipulation"
+                style={{ padding: `0 ${BAR_GAP / 2}px` }}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
+                onTouchStart={() => setHoveredIndex(i)}
+                onTouchEnd={() => setHoveredIndex(null)}
               >
                 {/* Tooltip (visible on hover) */}
                 {(isHovered || isSelected) && (
                   <div
                     className={cn(
-                      "absolute bottom-full mb-1 z-20 px-2 py-1",
-                      "bg-popover text-popover-foreground text-xs font-medium rounded shadow-md pointer-events-none whitespace-nowrap",
+                      "absolute bottom-full mb-1 z-20 px-1.5 sm:px-2 py-0.5 sm:py-1",
+                      "bg-popover text-popover-foreground text-[0.625rem] sm:text-xs font-medium rounded shadow-md pointer-events-none whitespace-nowrap",
                       "animate-in fade-in zoom-in-95 duration-200",
                     )}
                   >
-                    <span className="opacity-70 mr-1">{d.label}:</span>
+                    <span className="opacity-70 mr-0.5 sm:mr-1">{d.label}:</span>
                     {formatValue(d.value)}
                   </div>
                 )}
@@ -257,24 +255,22 @@ export const Chart = memo(function Chart({
                 {/* The Bar */}
                 <div
                   className={cn(
-                    "w-full rounded-t transition-all duration-200 relative h-[var(--bar-height)] bg-[var(--bar-color)] shadow-[var(--bar-shadow)]",
+                    "w-full rounded-t transition-all duration-200 relative",
                     isSelected
                       ? "opacity-100 ring-2 ring-primary ring-offset-1"
                       : "opacity-85 hover:opacity-100",
                   )}
-                  style={
-                    {
-                      "--bar-height": barHeight,
-                      "--bar-color": d.color,
-                      "--bar-shadow": isHovered
-                        ? `0 0 10px ${hexToRgba(d.color || "#000", 0.4)}`
-                        : "none",
-                    } as React.CSSProperties
-                  }
+                  style={{
+                    height: barHeight,
+                    backgroundColor: d.color,
+                    boxShadow: isHovered
+                      ? `0 0 10px ${hexToRgba(d.color || "#000", 0.4)}`
+                      : "none",
+                  }}
                 />
 
                 {/* X-Axis Label */}
-                <div className="absolute top-full mt-2 text-[10px] text-muted-foreground truncate w-full text-center max-w-full">
+                <div className="absolute top-full mt-1 sm:mt-2 text-[0.5rem] sm:text-[0.625rem] text-muted-foreground truncate w-full text-center max-w-full">
                   {d.label}
                 </div>
               </div>

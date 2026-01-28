@@ -60,22 +60,20 @@ export const Gantt = memo(function Gantt({
     });
 
   return (
-    <div className="glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-4 overflow-hidden shadow-lg">
+    <div className="glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl p-3 sm:p-4 overflow-hidden shadow-lg">
       {title && (
-        <h3 className="mb-5 text-lg font-bold text-foreground">{title}</h3>
+        <h3 className="mb-3 sm:mb-5 text-base sm:text-lg font-bold text-foreground">{title}</h3>
       )}
 
       <div
-        className="relative min-h-[var(--gantt-height)]"
-        style={
-          {
-            "--gantt-height": `${tasks.length * 40 + 40}px`,
-          } as React.CSSProperties
-        }
+        className="relative"
+        style={{
+          minHeight: `${tasks.length * 36 + 40}px`,
+        }}
       >
-        <div className="overflow-x-auto pb-3">
-          <div className="min-w-[600px]">
-            <div className="flex justify-between mb-3 border-b border-border pb-2 text-xs text-muted-foreground">
+        <div className="overflow-x-auto pb-2 sm:pb-3 touch-pan-x">
+          <div className="min-w-[400px] sm:min-w-[600px]">
+            <div className="flex justify-between mb-2 sm:mb-3 border-b border-border pb-1.5 sm:pb-2 text-[0.625rem] sm:text-xs text-muted-foreground">
               <span>{tasks[0] ? formatDate(tasks[0].start) : ""}</span>
               <span>
                 {(() => {
@@ -85,7 +83,7 @@ export const Gantt = memo(function Gantt({
               </span>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 sm:gap-3">
               {tasks.map((task, index) => {
                 const paddingLeft = getLeft(task.start);
                 const width = getWidth(task.start, task.end);
@@ -98,9 +96,9 @@ export const Gantt = memo(function Gantt({
                     data-selectable-item
                     data-element-key={element.key}
                     data-item-id={itemId}
-                    className="flex items-center h-7 rounded px-1 cursor-pointer hover:bg-muted/50 transition-colors"
+                    className="flex items-center h-6 sm:h-7 rounded px-0.5 sm:px-1 cursor-pointer hover:bg-muted/50 transition-colors touch-manipulation"
                   >
-                    <div className="w-1/5 pr-3 text-[13px] font-medium overflow-hidden text-ellipsis whitespace-nowrap text-foreground">
+                    <div className="w-1/4 sm:w-1/5 pr-1.5 sm:pr-3 text-[0.625rem] sm:text-[0.8125rem] font-medium overflow-hidden text-ellipsis whitespace-nowrap text-foreground">
                       {task.name}
                     </div>
 
@@ -112,25 +110,21 @@ export const Gantt = memo(function Gantt({
                     >
                       {isMilestone ? (
                         <div
-                          className="absolute w-4 h-4 z-10 border-2 border-white shadow-sm left-[var(--milestone-left)] bg-[var(--milestone-color)] rotate-45 -translate-x-1/2 origin-left"
-                          style={
-                            {
-                              "--milestone-left": `${paddingLeft}%`,
-                              "--milestone-color": task.color || "#eab308",
-                            } as React.CSSProperties
-                          }
+                          className="absolute w-3 h-3 sm:w-4 sm:h-4 z-10 border-2 border-white shadow-sm rotate-45 -translate-x-1/2 origin-left"
+                          style={{
+                            left: `${paddingLeft}%`,
+                            backgroundColor: task.color || "#eab308",
+                          }}
                           title={`Milestone: ${task.name}`}
                         />
                       ) : (
                         <div
-                          className="absolute h-full rounded opacity-90 flex items-center pl-2 text-white text-[10px] overflow-hidden left-[var(--task-left)] w-[var(--task-width)] bg-[var(--task-color)]"
-                          style={
-                            {
-                              "--task-left": `${paddingLeft}%`,
-                              "--task-width": `${width}%`,
-                              "--task-color": task.color || "var(--primary)",
-                            } as React.CSSProperties
-                          }
+                          className="absolute h-full rounded opacity-90 flex items-center pl-1.5 sm:pl-2 text-white text-[0.5rem] sm:text-[0.625rem] overflow-hidden"
+                          style={{
+                            left: `${paddingLeft}%`,
+                            width: `${width}%`,
+                            backgroundColor: task.color || "var(--primary)",
+                          }}
                           title={`${task.name}: ${task.progress}%`}
                         >
                           {width > 10 && (
@@ -138,12 +132,10 @@ export const Gantt = memo(function Gantt({
                           )}
 
                           <div
-                            className="absolute left-0 top-0 bottom-0 bg-white opacity-20 w-[var(--task-progress)]"
-                            style={
-                              {
-                                "--task-progress": `${task.progress}%`,
-                              } as React.CSSProperties
-                            }
+                            className="absolute left-0 top-0 bottom-0 bg-white opacity-20"
+                            style={{
+                              width: `${task.progress}%`,
+                            }}
                           />
                         </div>
                       )}
@@ -156,7 +148,7 @@ export const Gantt = memo(function Gantt({
         </div>
       </div>
 
-      {children && <div className="mt-6 space-y-4">{children}</div>}
+      {children && <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">{children}</div>}
     </div>
   );
 });

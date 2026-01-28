@@ -180,21 +180,21 @@ export const StockChart = memo(function StockChart({
   const timeframes: Timeframe[] = ["1D", "1W", "1M", "3M", "1Y", "5Y", "ALL"];
 
   return (
-    <div className="flex flex-col gap-3 p-4 glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-xl shadow-lg">
+    <div className="flex flex-col gap-2 sm:gap-3 p-3 sm:p-4 glass-panel bg-card/80 backdrop-blur-md border border-border/50 rounded-lg sm:rounded-xl shadow-lg">
       {/* Header */}
-      <div className="flex justify-between items-center flex-wrap gap-2">
-        <h3 className="m-0 text-sm font-semibold text-foreground">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <h3 className="m-0 text-xs sm:text-sm font-semibold text-foreground">
           {symbol} Stock Price
         </h3>
 
         {/* Timeframe Selector */}
-        <div className="flex gap-1 bg-muted/20 p-1 rounded-md">
+        <div className="flex gap-0.5 sm:gap-1 bg-muted/20 p-0.5 sm:p-1 rounded-md overflow-x-auto touch-pan-x w-full sm:w-auto">
           {timeframes.map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
               className={cn(
-                "px-2 py-1 text-xs font-medium rounded transition-all",
+                "px-2 sm:px-2.5 py-1 sm:py-1.5 text-[0.625rem] sm:text-xs font-medium rounded transition-all touch-manipulation min-h-[1.75rem] sm:min-h-0 flex-shrink-0",
                 timeframe === tf
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
@@ -208,12 +208,12 @@ export const StockChart = memo(function StockChart({
 
       {/* Chart Container */}
       <div
-        className="relative w-full overflow-hidden rounded bg-black/5 h-[var(--chart-height)]"
-        style={{ "--chart-height": `${height}px` } as React.CSSProperties}
+        className="relative w-full overflow-hidden rounded bg-black/5"
+        style={{ height: `${Math.max(height * 0.7, 200)}px` }}
       >
         <div ref={containerRef} className="w-full h-full" />
         {!filteredData.length && (
-          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
+          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-xs sm:text-sm">
             No data available for this timeframe
           </div>
         )}
