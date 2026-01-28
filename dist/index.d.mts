@@ -9,7 +9,11 @@ declare const Chart: react.NamedExoticComponent<ComponentRenderProps<Record<stri
  */
 declare const ChartPropsSchema: z.ZodObject<{
     title: z.ZodNullable<z.ZodString>;
-    data: z.ZodNullable<z.ZodArray<any>>;
+    data: z.ZodNullable<z.ZodArray<z.ZodObject<{
+        label: z.ZodString;
+        value: z.ZodNumber;
+        color: z.ZodNullable<z.ZodString>;
+    }, z.core.$strip>>>;
     dataPath: z.ZodNullable<z.ZodString>;
     height: z.ZodNullable<z.ZodNumber>;
     series: z.ZodNullable<z.ZodArray<z.ZodObject<{
@@ -28,7 +32,11 @@ declare const ChartDefinition: {
     name: "Chart";
     props: z.ZodObject<{
         title: z.ZodNullable<z.ZodString>;
-        data: z.ZodNullable<z.ZodArray<any>>;
+        data: z.ZodNullable<z.ZodArray<z.ZodObject<{
+            label: z.ZodString;
+            value: z.ZodNumber;
+            color: z.ZodNullable<z.ZodString>;
+        }, z.core.$strip>>>;
         dataPath: z.ZodNullable<z.ZodString>;
         height: z.ZodNullable<z.ZodNumber>;
         series: z.ZodNullable<z.ZodArray<z.ZodObject<{
@@ -209,7 +217,7 @@ declare const MindMap: react.NamedExoticComponent<ComponentRenderProps<Record<st
  */
 declare const MindMapPropsSchema: z.ZodObject<{
     title: z.ZodNullable<z.ZodString>;
-    nodes: z.ZodArray<any>;
+    nodes: z.ZodArray<z.ZodType<Record<string, unknown>, unknown, z.core.$ZodTypeInternals<Record<string, unknown>, unknown>>>;
     layout: z.ZodNullable<z.ZodEnum<{
         horizontal: "horizontal";
         vertical: "vertical";
@@ -225,7 +233,7 @@ declare const MindMapDefinition: {
     name: "MindMap";
     props: z.ZodObject<{
         title: z.ZodNullable<z.ZodString>;
-        nodes: z.ZodArray<any>;
+        nodes: z.ZodArray<z.ZodType<Record<string, unknown>, unknown, z.core.$ZodTypeInternals<Record<string, unknown>, unknown>>>;
         layout: z.ZodNullable<z.ZodEnum<{
             horizontal: "horizontal";
             vertical: "vertical";
@@ -243,8 +251,27 @@ declare const Graph: react.NamedExoticComponent<ComponentRenderProps<Record<stri
  */
 declare const GraphPropsSchema: z.ZodObject<{
     title: z.ZodNullable<z.ZodString>;
-    nodes: z.ZodNullable<z.ZodArray<any>>;
-    edges: z.ZodNullable<z.ZodArray<any>>;
+    nodes: z.ZodNullable<z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        label: z.ZodString;
+        description: z.ZodNullable<z.ZodString>;
+        group: z.ZodNullable<z.ZodString>;
+        type: z.ZodNullable<z.ZodString>;
+        color: z.ZodNullable<z.ZodString>;
+        size: z.ZodNullable<z.ZodNumber>;
+        icon: z.ZodNullable<z.ZodString>;
+    }, z.core.$catchall<z.ZodUnknown>>>>;
+    edges: z.ZodNullable<z.ZodArray<z.ZodObject<{
+        id: z.ZodNullable<z.ZodString>;
+        from: z.ZodNullable<z.ZodString>;
+        to: z.ZodNullable<z.ZodString>;
+        source: z.ZodNullable<z.ZodString>;
+        target: z.ZodNullable<z.ZodString>;
+        label: z.ZodNullable<z.ZodString>;
+        weight: z.ZodNullable<z.ZodNumber>;
+        directed: z.ZodNullable<z.ZodBoolean>;
+        color: z.ZodNullable<z.ZodString>;
+    }, z.core.$strip>>>;
     layout: z.ZodNullable<z.ZodEnum<{
         force: "force";
         grid: "grid";
@@ -266,8 +293,27 @@ declare const GraphDefinition: {
     name: "Graph";
     props: z.ZodObject<{
         title: z.ZodNullable<z.ZodString>;
-        nodes: z.ZodNullable<z.ZodArray<any>>;
-        edges: z.ZodNullable<z.ZodArray<any>>;
+        nodes: z.ZodNullable<z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            label: z.ZodString;
+            description: z.ZodNullable<z.ZodString>;
+            group: z.ZodNullable<z.ZodString>;
+            type: z.ZodNullable<z.ZodString>;
+            color: z.ZodNullable<z.ZodString>;
+            size: z.ZodNullable<z.ZodNumber>;
+            icon: z.ZodNullable<z.ZodString>;
+        }, z.core.$catchall<z.ZodUnknown>>>>;
+        edges: z.ZodNullable<z.ZodArray<z.ZodObject<{
+            id: z.ZodNullable<z.ZodString>;
+            from: z.ZodNullable<z.ZodString>;
+            to: z.ZodNullable<z.ZodString>;
+            source: z.ZodNullable<z.ZodString>;
+            target: z.ZodNullable<z.ZodString>;
+            label: z.ZodNullable<z.ZodString>;
+            weight: z.ZodNullable<z.ZodNumber>;
+            directed: z.ZodNullable<z.ZodBoolean>;
+            color: z.ZodNullable<z.ZodString>;
+        }, z.core.$strip>>>;
         layout: z.ZodNullable<z.ZodEnum<{
             force: "force";
             grid: "grid";
@@ -291,7 +337,7 @@ declare const Gantt: react.NamedExoticComponent<ComponentRenderProps<Record<stri
  */
 declare const GanttPropsSchema: z.ZodObject<{
     title: z.ZodNullable<z.ZodString>;
-    tasks: z.ZodArray<any>;
+    tasks: z.ZodArray<z.ZodType<Record<string, unknown>, unknown, z.core.$ZodTypeInternals<Record<string, unknown>, unknown>>>;
     lock: z.ZodNullable<z.ZodBoolean>;
 }, z.core.$strip>;
 /** Type inference for Gantt props */
@@ -303,7 +349,7 @@ declare const GanttDefinition: {
     name: "Gantt";
     props: z.ZodObject<{
         title: z.ZodNullable<z.ZodString>;
-        tasks: z.ZodArray<any>;
+        tasks: z.ZodArray<z.ZodType<Record<string, unknown>, unknown, z.core.$ZodTypeInternals<Record<string, unknown>, unknown>>>;
         lock: z.ZodNullable<z.ZodBoolean>;
     }, z.core.$strip>;
     description: string;
